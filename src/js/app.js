@@ -50,7 +50,7 @@ export default class Sketch {
   }
 
   addObjects() {
-    this.geometry = new THREE.PlaneGeometry(0.5, 0.5, 50, 50)
+    this.geometry = new THREE.PlaneGeometry(4, 4, 150, 150)
     this.material = new THREE.MeshNormalMaterial()
 
     /**
@@ -58,10 +58,13 @@ export default class Sketch {
      * `vertexShader`: responsible of the positions on screen
      */
     this.material = new THREE.ShaderMaterial({
+      uniforms: {
+        time: { value: 0 },
+      },
       side: THREE.DoubleSide,
       fragmentShader,
       vertexShader,
-      wireframe: true,
+      // wireframe: true,
     })
 
     this.mesh = new THREE.Mesh(this.geometry, this.material)
@@ -74,6 +77,8 @@ export default class Sketch {
     this.mesh.rotation.x = this.time / 2000
     this.mesh.rotation.y = this.time / 1000
 
+    this.material.uniforms.time.value = this.time
+
     this.renderer.render(this.scene, this.camera)
 
     window.requestAnimationFrame(this.render.bind(this))
@@ -83,33 +88,3 @@ export default class Sketch {
 new Sketch({
   dom: document.getElementById('container'),
 })
-
-// function init() {
-//   camera = new THREE.PerspectiveCamera(
-//     70,
-//     window.innerWidth / window.innerHeight,
-//     0.01,
-//     10
-//   )
-//   camera.position.z = 1
-
-//   scene = new THREE.Scene()
-
-//   geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2)
-//   material = new THREE.MeshNormalMaterial()
-
-//   mesh = new THREE.Mesh(geometry, material)
-//   scene.add(mesh)
-
-//   renderer = new THREE.WebGLRenderer({ antialias: true })
-//   renderer.setSize(window.innerWidth, window.innerHeight)
-//   renderer.setAnimationLoop(animation)
-//   document.body.appendChild(renderer.domElement)
-// }
-
-// function animation(time) {
-//   mesh.rotation.x = time / 2000
-//   mesh.rotation.y = time / 1000
-
-//   renderer.render(scene, camera)
-// }
