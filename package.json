@@ -1,5 +1,5 @@
 {
-  "name": "threejs-image-effects",
+  "name": "threejs-images-effects",
   "version": "0.1.0",
   "scripts": {
     "build": "webpack --config ./bundler/webpack.prod.js",
