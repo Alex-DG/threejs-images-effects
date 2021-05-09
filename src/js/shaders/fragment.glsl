@@ -15,8 +15,8 @@ void main()	{
 
     vec4 oceanView = texture2D(oceanTexture, newUV); // load the texture
 
-    gl_FragColor = vec4(finalColor, 1.);
+    // gl_FragColor = vec4(finalColor, 1.);
     gl_FragColor = vec4(vUv, 0., 1.);
-    gl_FragColor = oceanView + 0.5 * vec4(vNoise);
+    // gl_FragColor = oceanView + 0.5 * vec4(vNoise);
     // gl_FragColor = vec4(vNoise);
 }

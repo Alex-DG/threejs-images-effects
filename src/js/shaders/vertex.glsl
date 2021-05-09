@@ -82,10 +82,15 @@ void main() {
     vec3 newposition = position;
 
     float PI = 3.1415925;
-    float noise = cnoise(vec3(position.x*4.0, position.y*4.0 + time/5., 0.));
+    float noise = cnoise(3. * vec3(position.x, position.y, position.z + time/30.));
 
     // newposition.z += 0.1*sin( (newposition.x + 0.25 + time/10.0)*2.0*PI);
     // newposition.z += 0.2*noise; // 0.2 help to change the amplitude of the noise
+
+    // float dist = distance(position, vec2(0.5)); // Calculate the distance from the center
+    // newposition.z += 0.05 * sin(dist*40.); //  0.05 * sin(dist*40. - time);
+
+    newposition += 0.1* normal * noise;
 
     vNoise = noise;
     vUv = uv;
