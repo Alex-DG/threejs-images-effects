@@ -15,7 +15,6 @@
     "dat.gui": "^0.7.7",
     "file-loader": "^6.2.0",
     "gsap": "^3.6.1",
-    "html-loader": "^2.1.1",
     "html-webpack-plugin": "^5.2.0",
     "imagesloaded": "^4.1.4",
     "load-asset": "^1.2.0",
@@ -28,5 +27,8 @@
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.7.3"
+  },
+  "devDependencies": {
+    "html-loader": "^2.1.2"
   }
 }

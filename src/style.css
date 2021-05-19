@@ -12,6 +12,11 @@ canvas {
   display: block;
 }
 
+img {
+  width: auto;
+  height: 300px;
+}
+
 #container {
   width: 100vw;
   height: 100vh;

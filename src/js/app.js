@@ -8,7 +8,7 @@ import fragmentShader from './shaders/fragment.glsl'
 import vertexShader from './shaders/vertex.glsl'
 
 // Images
-import ocean from '../../static/images/ocean2.jpg'
+import ocean from '../assets/images/ocean.jpg'
 
 export default class Sketch {
   constructor(options) {

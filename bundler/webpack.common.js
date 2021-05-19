@@ -22,49 +22,40 @@ module.exports = {
   ],
   module: {
     rules: [
-      // HTML
-      {
-        test: /\.(html)$/,
-        use: ['html-loader'],
-      },
-
-      // JS
+      // JavaScript
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ['babel-loader'],
+        use: ['babel-loader'], // Transpile files with Babel and webpack.
+      },
+
+      /**
+       * Exports HTML as string. HTML is minimized when the compiler demands
+       * i.e: src=".images/ocean.jpg"
+       *
+       * doc:https://webpack.js.org/loaders/html-loader/
+       */
+      {
+        test: /\.html$/i,
+        loader: 'html-loader',
+      },
+
+      // Images
+      {
+        test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
+        type: 'asset/resource',
+      },
+
+      // Fonts and SVGs
+      {
+        test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
+        type: 'asset/inline',
       },
 
       // CSS
       {
         test: /\.css$/,
         use: [MiniCSSExtractPlugin.loader, 'css-loader'],
-      },
-
-      // Images
-      {
-        test: /\.(jpg|png|gif|svg)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              outputPath: 'assets/images/',
-            },
-          },
-        ],
-      },
-
-      // Fonts
-      {
-        test: /\.(ttf|eot|woff|woff2)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              outputPath: 'assets/fonts/',
-            },
-          },
-        ],
       },
 
       // Shaders
