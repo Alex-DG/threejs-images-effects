@@ -90,7 +90,7 @@ void main() {
     // float dist = distance(position, vec2(0.5)); // Calculate the distance from the center
     // newposition.z += 0.05 * sin(dist*40.); //  0.05 * sin(dist*40. - time);
 
-    newposition += 0.1* normal * noise;
+    // newposition += 0.1* normal * noise; // add noise
 
     vNoise = noise;
     vUv = uv;

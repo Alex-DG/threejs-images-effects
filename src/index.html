@@ -3,21 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Three.js Images</title>
+    <title>Document</title>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Playfair+Display&display=swap"
       rel="stylesheet"
     />
+    <!-- <link rel="stylesheet" href="css/style.css" /> -->
+    <!--
+    // Performance tips and what to
+    // 0. Resize
+    // 1. Render only when you need to
+    // 2. Check if objects are in the viewport, and dont render them
+    // 3. Break scroll parts into pieces
+    // 4. Antialias
+    // 5. Device Pixel Ratio
+    // 6. Debug performance
+ -->
   </head>
-
   <body>
     <main>
       <div data-scroll>
         <div class="page">
           <header>
             <h1>Oceans</h1>
-            <img src="./assets/images/header.jpg" alt="" />
+            <img src="assets/images/header.jpg" alt="" />
           </header>
           <!-- BEGIN grid -->
           <div class="grid">
@@ -27,7 +37,7 @@
               class="item item_v"
             >
               <div class="item__image">
-                <img src="./assets/images/1.jpg" alt="" />
+                <img src="assets/images/1.jpg" alt="" />
                 <div class="item__meta">December 23, 2020</div>
               </div>
 
@@ -46,7 +56,7 @@
               class="item item_h"
             >
               <div class="item__image">
-                <img src="./assets/images/2.jpg" alt="" />
+                <img src="assets/images/2.jpg" alt="" />
                 <div class="item__meta">December 01, 2020</div>
               </div>
 
@@ -66,7 +76,7 @@
               class="item item_h"
             >
               <div class="item__image">
-                <img src="./assets/images/4.jpg" alt="" />
+                <img src="assets/images/4.jpg" alt="" />
                 <div class="item__meta">November 26, 2020</div>
               </div>
 
@@ -84,7 +94,7 @@
               class="item item_v"
             >
               <div class="item__image">
-                <img src="./assets/images/3.jpg" alt="" />
+                <img src="assets/images/3.jpg" alt="" />
                 <div class="item__meta">November 03, 2020</div>
               </div>
 
@@ -101,7 +111,7 @@
               class="item item_v"
             >
               <div class="item__image">
-                <img src="./assets/images/1.jpg" alt="" />
+                <img src="assets/images/1.jpg" alt="" />
                 <div class="item__meta">October 05, 2020</div>
               </div>
 
@@ -118,7 +128,7 @@
               class="item item_h"
             >
               <div class="item__image">
-                <img src="./assets/images/2.jpg" alt="" />
+                <img src="assets/images/2.jpg" alt="" />
                 <div class="item__meta">July 27, 2020</div>
               </div>
 
@@ -135,7 +145,7 @@
               class="item item_h"
             >
               <div class="item__image">
-                <img src="./assets/images/4.jpg" alt="" />
+                <img src="assets/images/4.jpg" alt="" />
                 <div class="item__meta">August 18, 2020</div>
               </div>
 
@@ -152,7 +162,7 @@
               class="item item_v"
             >
               <div class="item__image">
-                <img src="./assets/images/3.jpg" alt="" />
+                <img src="assets/images/3.jpg" alt="" />
                 <div class="item__meta">June 01, 2020</div>
               </div>
 
@@ -186,8 +196,6 @@
       </div>
       <!-- end scroll -->
     </main>
-    <div id="container">
-      <!-- <img src="./assets/images/ocean.jpg" /> -->
-    </div>
+    <div id="container"></div>
   </body>
 </html>

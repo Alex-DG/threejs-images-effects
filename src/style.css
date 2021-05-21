@@ -2,12 +2,9 @@
   margin: 0;
   padding: 0;
 }
-
-html,
 body {
   font-family: 'Open Sans', sans-serif;
 }
-
 .page {
   width: min(90%, 1200px);
   margin: 0 auto;
@@ -65,7 +62,7 @@ h2 {
 .item img {
   width: 100%;
   display: block;
-  opacity: 1; /* to change */
+  opacity: 0;
 }
 .item__image {
   position: relative;
@@ -137,12 +134,3 @@ h2 {
   top: 0;
   left: 0;
 }
-
-/* canvas {
-  display: block;
-}
-
-#container {
-  width: 100vw;
-  height: 100vh;
-} */
