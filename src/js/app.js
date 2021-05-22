@@ -1,7 +1,13 @@
 import '../style.css'
 
 import * as THREE from 'three'
+
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+
+// Post-processing
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
 
 import gsap from 'gsap'
 import imagesLoaded from 'imagesloaded'
@@ -12,6 +18,7 @@ import Scroll from './scroll'
 // Shaders
 import fragmentShader from './shaders/fragment.glsl'
 import vertexShader from './shaders/vertex.glsl'
+import noise from './shaders/noise.glsl'
 
 // Images
 import ocean from '../assets/images/ocean.jpg'
@@ -84,6 +91,7 @@ export default class Sketch {
       this.mouseMouvement()
       this.resize()
       this.setupResize()
+      this.composerPass()
       this.render()
     })
   }
@@ -96,6 +104,57 @@ export default class Sketch {
 
     this.camera.aspect = this.width / this.height
     this.camera.updateProjectionMatrix()
+  }
+
+  composerPass() {
+    this.composer = new EffectComposer(this.renderer)
+    this.renderPass = new RenderPass(this.scene, this.camera)
+    this.composer.addPass(this.renderPass)
+
+    //custom shader pass
+    var counter = 0.0
+
+    this.myEffect = {
+      uniforms: {
+        tDiffuse: { value: null },
+        scrollSpeed: { value: null },
+      },
+      vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+
+        gl_Position = projectionMatrix
+          * modelViewMatrix
+          * vec4( position, 1.0 );
+      }
+      `,
+      fragmentShader: `
+      varying vec2 vUv;
+
+      uniform sampler2D tDiffuse;
+      uniform float scrollSpeed;
+
+      // ${noise}
+
+      void main(){
+        vec2 newUV = vUv;
+
+        float area = smoothstep(0.4,0.,vUv.y);
+        area = pow(area,4.);
+
+        newUV.x -= (vUv.x - 0.5)*0.1*area*scrollSpeed;
+
+        gl_FragColor = texture2D( tDiffuse, newUV);
+      }
+      `,
+    }
+
+    this.customPass = new ShaderPass(this.myEffect)
+    this.customPass.renderToScreen = true
+
+    this.composer.addPass(this.customPass)
   }
 
   mouseMouvement() {
@@ -209,7 +268,10 @@ export default class Sketch {
       material.uniforms.time.value = this.time
     })
 
-    this.renderer.render(this.scene, this.camera)
+    this.customPass.uniforms.scrollSpeed.value = this.scroll.speedTarget
+
+    // this.renderer.render(this.scene, this.camera)
+    this.composer.render()
 
     window.requestAnimationFrame(this.render.bind(this))
   }
