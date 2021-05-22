@@ -3,6 +3,7 @@ import '../style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
+import gsap from 'gsap'
 import imagesLoaded from 'imagesloaded'
 import FontFaceObserver from 'fontfaceobserver'
 
@@ -72,21 +73,18 @@ export default class Sketch {
     this.currentScroll = 0
     this.previousScroll = 0
 
-    Promise.all(allDone).then(() => {
-      this.addImages()
-      this.setPosition()
+    this.raycaster = new THREE.Raycaster()
+    this.mouse = new THREE.Vector2()
 
+    Promise.all(allDone).then(() => {
       this.scroll = new Scroll()
 
+      this.addImages()
+      this.setPosition()
+      this.mouseMouvement()
       this.resize()
       this.setupResize()
-      // this.addObjects()
       this.render()
-
-      // window.addEventListener('scroll', () => {
-      //   this.currentScroll = window.scrollY
-      //   this.setPosition()
-      // })
     })
   }
 
@@ -100,15 +98,34 @@ export default class Sketch {
     this.camera.updateProjectionMatrix()
   }
 
+  mouseMouvement() {
+    window.addEventListener(
+      'mousemove',
+      (event) => {
+        // calculate mouse position in normalized device coordinates
+        // (-1 to +1) for both components
+        this.mouse.x = (event.clientX / this.width) * 2 - 1
+        this.mouse.y = -(event.clientY / this.height) * 2 + 1
+
+        // update the picking ray with the camera and mouse position
+        this.raycaster.setFromCamera(this.mouse, this.camera)
+
+        // calculate objects intersecting the picking ray
+        const intersects = this.raycaster.intersectObjects(this.scene.children)
+        if (intersects.length > 0) {
+          let obj = intersects[0].object
+          obj.material.uniforms.hover.value = intersects[0].uv
+        }
+      },
+      false
+    )
+  }
+
   setupResize() {
     window.addEventListener('resize', this.resize.bind(this))
   }
 
-  addObjects() {
-    this.geometry = new THREE.PlaneBufferGeometry(200, 400, 10, 10)
-    // this.geometry = new THREE.SphereGeometry(0.4, 40, 40)
-    this.material = new THREE.MeshNormalMaterial()
-
+  addImages() {
     /**
      * `fragmentShader`: responsible of the colors on screen
      * `vertexShader`: responsible of the positions on screen
@@ -116,30 +133,46 @@ export default class Sketch {
     this.material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
+        uImage: { value: 0 },
+        hover: { value: new THREE.Vector2(0.5, 0.5) },
+        hoverState: { value: 0 },
         oceanTexture: { value: new THREE.TextureLoader().load(ocean) },
       },
       side: THREE.DoubleSide,
       fragmentShader,
       vertexShader,
-      wireframe: true,
+      wireframe: false,
     })
 
-    this.mesh = new THREE.Mesh(this.geometry, this.material)
-    this.scene.add(this.mesh)
-  }
+    this.materials = []
 
-  addImages() {
     this.imageStore = this.images.map((img) => {
       const { top, left, width, height } = img.getBoundingClientRect()
 
-      const geometry = new THREE.PlaneBufferGeometry(width, height, 1, 1)
+      const geometry = new THREE.PlaneBufferGeometry(width, height, 10, 10)
 
       const texture = new THREE.Texture(img)
       texture.needsUpdate = true
-      const material = new THREE.MeshBasicMaterial({
-        // color: 0xff0000,
-        map: texture,
+
+      let material = this.material.clone()
+      material.uniforms.uImage.value = texture
+
+      // Animation on hover in
+      img.addEventListener('mouseenter', () => {
+        gsap.to(material.uniforms.hoverState, {
+          duration: 1,
+          value: 1,
+        })
       })
+      // Animation on hover out
+      img.addEventListener('mouseout', () => {
+        gsap.to(material.uniforms.hoverState, {
+          duration: 1,
+          value: 0,
+        })
+      })
+
+      this.materials.push(material)
 
       const mesh = new THREE.Mesh(geometry, material)
 
@@ -171,6 +204,10 @@ export default class Sketch {
     this.currentScroll = this.scroll.scrollToRender
 
     this.setPosition()
+
+    this.materials.forEach((material) => {
+      material.uniforms.time.value = this.time
+    })
 
     this.renderer.render(this.scene, this.camera)
 
