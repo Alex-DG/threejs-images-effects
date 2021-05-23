@@ -44,9 +44,12 @@ export default class Sketch {
       2 * Math.atan((this.height / 2) * (1 / 600)) * (180 / Math.PI)
 
     this.renderer = new THREE.WebGLRenderer({
-      antialias: true,
+      antialias: true, // pretty expensive if you don't see the difference it could be worth to remove it to improve the performance
       alpha: true,
     })
+
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)) // improve perf.
+
     this.renderer.setSize(this.width, this.height)
     this.container.appendChild(this.renderer.domElement)
 
@@ -271,6 +274,9 @@ export default class Sketch {
     this.previousScroll = this.currentScroll
     this.currentScroll = this.scroll.scrollToRender
 
+    // if (Math.round(this.currentScroll) !== Math.round(this.previousScroll)) {
+    // console.log('should render!')
+
     this.setPosition()
 
     this.materials.forEach((material) => {
@@ -282,6 +288,7 @@ export default class Sketch {
 
     // this.renderer.render(this.scene, this.camera)
     this.composer.render()
+    // }
 
     window.requestAnimationFrame(this.render.bind(this))
   }

@@ -10,10 +10,8 @@ void main()	{
     vec2 p = newUV;
 
     float x = hoverState;
-    x = smoothstep(.0,1.0,(x*2.0+p.y-1.0));
 
-    // Effec 1
-    vec4 oceanView = texture2D(uImage, newUV); // load the texture
+    x = smoothstep(.0,1.0,(x*2.0+p.y-1.0));
 
     // Effect 2
     vec4 f = mix(
@@ -21,8 +19,10 @@ void main()	{
         texture2D(uImage, (p-.5)*x+.5),
         x);
 
+    // Effect 1
+    vec4 oceanView = texture2D(uImage,newUV);
 
-    gl_FragColor = vec4(vUv, 0., 1.);
+    // gl_FragColor = vec4(vUv, 0., 1.);
     // gl_FragColor = vec4(vNoise, 0.,0.,1.);
 
     gl_FragColor = f; // Advanced wave effect 2
