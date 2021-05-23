@@ -143,21 +143,19 @@ export default class Sketch {
       void main(){
         vec2 newUV = vUv;
 
-        float area = (smoothstep(1., 0.3, vUv.y)* 2.) - 1.;
-        // area = pow(area,4.);
-        // area = pow(area,4.);
+        float area = smoothstep(1.,0.8,vUv.y)*2. - 1.;
+        float area1 = smoothstep(0.4,0.0,vUv.y);
+        area1 = pow(area1,4.);
 
-        float noise = 0.5 * (cnoise(vec3(vUv*10., time/5.)) + 1.);
-        float n = smoothstep(0.5, 0.51, noise + area);
+        float noise = 0.5*(cnoise(vec3(vUv*10.,time/5.)) + 1.);
+        float n = smoothstep(0.5,0.51, noise + area/2.);
 
-        newUV.x -= (vUv.x - 0.5)*0.1*area*scrollSpeed;
+        newUV.x -= (vUv.x - 0.5)*0.1*area1*scrollSpeed;
 
-        gl_FragColor = texture2D(tDiffuse, newUV);
-
+        gl_FragColor = texture2D( tDiffuse, newUV);
+        //   gl_FragColor = vec4(n,0.,0.,1.);
+        gl_FragColor = mix(vec4(1.),texture2D(tDiffuse, newUV),n);
         // gl_FragColor = vec4(area,0.,0.,1.);
-        // gl_FragColor = vec4(n,0.,0.,1.);
-
-        gl_FragColor = mix(vec4(1.), texture2D(tDiffuse, newUV),n);
       }
       `,
     }
